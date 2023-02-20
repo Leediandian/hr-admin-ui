@@ -51,6 +51,11 @@
       <el-table-column label="加班类型编码" align="center" prop="code" />
       <el-table-column label="加班类型名称" align="center" prop="name" />
       <el-table-column label="工资倍数下限" align="center" prop="lowerLimit" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template #default="scope">
+          <span>{{ scope.row.createTime }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
           <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -152,11 +157,6 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-onMounted(() => {
-  getList();
-})
-
-
 
 /** 查询加班类型列表 */
 function getList () {
@@ -229,7 +229,7 @@ function submitForm () {
           getList();
         });
       } else {
-        addOvertimeType(this.form).then(response => {
+        addOvertimeType(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
@@ -255,4 +255,5 @@ function handleExport () {
   }, `overtimeType_${new Date().getTime()}.xlsx`)
 }
 
+getList();
 </script>

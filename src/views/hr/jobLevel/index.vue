@@ -47,9 +47,9 @@
       <el-table-column label="职称编号" align="center" prop="jobLevelId" />
       <el-table-column label="职称名称" align="center" prop="jobLevelName" />
       <el-table-column label="职称等级" align="center" prop="titleLevel" />
-      <el-table-column label="创建时间" align="center" prop="createDate" width="180">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
-          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">

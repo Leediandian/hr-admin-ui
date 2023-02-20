@@ -38,6 +38,11 @@
       <el-table-column label="午餐补助" align="center" prop="lunchSalary" />
       <el-table-column label="交通补助" align="center" prop="trafficSalary" />
       <el-table-column label="应发工资" align="center" prop="allSalary" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template #default="scope">
+          <span>{{ scope.row.createTime }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="250">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleShow(scope.row)"
