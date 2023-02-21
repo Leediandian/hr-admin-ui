@@ -1,3 +1,13 @@
+<!--
+ * @Author: diandian
+ * @Date: 2023-02-20 15:40:20
+ * @LastEditors: diandain 498728659@qq.com
+ * @LastEditTime: 2023-02-21 19:12:27
+ * @FilePath: \hr-admin-ui\src\layout\components\Sidebar\Logo.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <div class="sidebar-logo-container" :class="{ 'collapse': collapse }" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
     <transition name="sidebarLogoFade">
@@ -54,10 +64,10 @@ const sideTheme = computed(() => settingsStore.sideTheme);
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 42px;
+      height: 42px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 20px;
     }
 
     & .sidebar-title {
@@ -66,7 +76,7 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
