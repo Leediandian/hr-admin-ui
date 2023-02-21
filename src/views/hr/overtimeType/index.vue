@@ -9,10 +9,6 @@
         <el-input v-model="queryParams.name" style="width: 200px" placeholder="请输入加班类型名称" clearable
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="工资倍数下限" prop="lowerLimit">
-        <el-input v-model="queryParams.lowerLimit" style="width: 200px" placeholder="请输入工资倍数下限" clearable
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="加班类型状态" clearable style="width: 200px">
           <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value" />
@@ -50,7 +46,6 @@
       <el-table-column label="加班类型编号" align="center" prop="overtimeTypeId" />
       <el-table-column label="加班类型编码" align="center" prop="code" />
       <el-table-column label="加班类型名称" align="center" prop="name" />
-      <el-table-column label="工资倍数下限" align="center" prop="lowerLimit" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
@@ -83,9 +78,6 @@
         </el-form-item>
         <el-form-item label="加班类型名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入加班类型名称" />
-        </el-form-item>
-        <el-form-item label="工资倍数下限" prop="lowerLimit">
-          <el-input v-model="form.lowerLimit" placeholder="请输入工资倍数下限" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
@@ -137,7 +129,6 @@ const data = reactive({
     code: undefined,
     name: undefined,
     status: undefined,
-    lowerLimit: undefined,
   },
   rules: {
     status: [
@@ -149,9 +140,6 @@ const data = reactive({
     code: [
       { required: true, message: "加班类型编码不能为空", trigger: "blur" }
     ],
-    lowerLimit: [
-      { required: true, message: "工资倍数下限不能为空", trigger: "blur" }
-    ]
   },
 });
 
@@ -182,7 +170,6 @@ function reset () {
     status: "0",
     createTime: undefined,
     updateTime: undefined,
-    lowerLimit: undefined,
   };
   proxy.resetForm("overtimeTypeRef");
 }

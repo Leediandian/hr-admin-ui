@@ -238,7 +238,7 @@ function reset () {
     bonus: 0,
     lunchSalary: 0,
     trafficSalary: 0,
-    allSalary: 0,
+    allSalary: null,
     pensionBase: null,
     pensionPer: null,
     medicalBase: null,

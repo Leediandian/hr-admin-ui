@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+
+// 查询全部加班类型列表
+export function allListOvertimeType(query) {
+  return request({
+    url: '/hr/overtimeType/allList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询加班类型列表
 export function listOvertimeType(query) {
   return request({
