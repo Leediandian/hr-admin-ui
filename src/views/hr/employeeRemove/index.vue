@@ -2,7 +2,7 @@
  * @Author: diandian
  * @Date: 2023-02-13 09:49:16
  * @LastEditors: diandain 498728659@qq.com
- * @LastEditTime: 2023-02-19 16:53:15
+ * @LastEditTime: 2023-02-21 18:12:51
  * @FilePath: \hr-admin-ui\src\views\hr\employeeRemove\index.vue
  * @Description: 
  * 
@@ -97,7 +97,7 @@
       </el-table-column>
       <el-table-column label="调动原因" align="center" prop="reason" :show-overflow-tooltip="true" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['hr:employeeRemove:edit']">查看</el-button>

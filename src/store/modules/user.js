@@ -1,6 +1,16 @@
+/*
+ * @Author: diandian
+ * @Date: 2023-02-20 15:40:20
+ * @LastEditors: diandain 498728659@qq.com
+ * @LastEditTime: 2023-02-21 18:08:30
+ * @FilePath: \hr-admin-ui\src\store\modules\user.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import defAva from '@/assets/images/profile.jpg'
+import defAva from '@/assets/images/profile.png'
 
 const useUserStore = defineStore(
   'user',

@@ -43,9 +43,9 @@
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="250">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="280">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleShow(scope.row)"
+          <el-button link type="primary" icon="Tickets" @click="handleShow(scope.row)"
             v-hasPermi="['hr:salary:edit']">查看明细</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['hr:salary:edit']">修改</el-button>

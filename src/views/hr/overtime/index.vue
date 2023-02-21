@@ -60,7 +60,7 @@
           <dict-tag :options="employe_overtime_is_time_off" :value="scope.row.isTimeOff" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['hr:overtime:edit']">修改</el-button>
@@ -78,7 +78,7 @@
       <el-form ref="overtimeRef" :model="form" :rules="rules">
         <el-form-item label="员工" prop="employeeId">
           <el-autocomplete v-model="form.employeeName" :fetch-suggestions="getEmployeeList" placeholder="请输入员工名称"
-            @select="handleSelect" clearable>
+            @select="handleSelect" clearable :disabled="title == '修改员工加班管理'">
             <template #suffix>
               <el-icon class="el-input__icon">
                 <edit />
@@ -132,7 +132,7 @@
 import { listOvertime, getOvertime, delOvertime, addOvertime, updateOvertime } from "@/api/hr/overtime";
 import { listEmployee } from "@/api/hr/employee";
 import { allListOvertimeType } from "@/api/hr/overtimeType";
-import { fromPairs } from "lodash";
+
 const { proxy } = getCurrentInstance();
 //员工加班计数类型列表
 const { employe_overtime_count_type } = proxy.useDict("employe_overtime_count_type");
@@ -238,6 +238,7 @@ function reset () {
     bonus: null,
     overtimeTypeId: null,
     employeeId: null,
+    employeeName: "",
     countType: '0',
     remark: null,
     timeNum: null,

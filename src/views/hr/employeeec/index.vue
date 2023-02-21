@@ -67,7 +67,7 @@
       </el-table-column>
       <el-table-column label="奖罚原因" align="center" prop="ecReason" />
       <el-table-column label="奖罚金额" align="center" prop="ecNum" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['hr:employeeec:edit']">修改</el-button>

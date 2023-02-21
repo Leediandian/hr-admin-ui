@@ -197,9 +197,9 @@
           <span>{{ parseTime(scope.row.birthday, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  width="280">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleShowDetail(scope.row)"
+          <el-button link type="primary" icon="Tickets" @click="handleShowDetail(scope.row)"
             v-hasPermi="['hr:employee:edit']">查看明细</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['hr:employee:edit']">修改</el-button>
