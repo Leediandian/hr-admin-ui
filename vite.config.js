@@ -1,3 +1,13 @@
+/*
+ * @Author: diandian
+ * @Date: 2023-02-20 15:40:20
+ * @LastEditors: diandain 498728659@qq.com
+ * @LastEditTime: 2023-02-22 11:22:03
+ * @FilePath: \hr-admin-ui\vite.config.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
@@ -9,7 +19,6 @@ export default defineConfig(({ mode, command }) => {
   return {
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    // 例如 https://www.ruoyi.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.ruoyi.vip/admin/，则设置 baseUrl 为 /admin/。
     base: VITE_APP_ENV === 'production' ? '/' : '/',
     plugins: createVitePlugins(env, command === 'build'),
     resolve: {

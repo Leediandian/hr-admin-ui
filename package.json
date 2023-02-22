@@ -1,5 +1,5 @@
 {
-  "name": "ruoyi",
+  "name": "hr-admin-ui",
   "version": "3.8.5",
   "description": "人力资源管理系统",
   "author": "人力资源",
@@ -9,10 +9,6 @@
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.0.10",

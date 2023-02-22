@@ -1,3 +1,13 @@
+/*
+ * @Author: diandian
+ * @Date: 2023-02-20 15:40:19
+ * @LastEditors: diandain 498728659@qq.com
+ * @LastEditTime: 2023-02-22 11:24:55
+ * @FilePath: \hr-admin-ui\src\main.js
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { createApp } from 'vue'
 
 import Cookies from 'js-cookie'
@@ -25,7 +35,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
+import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/hrCommon'
 
 // 分页组件
 import Pagination from '@/components/Pagination'
