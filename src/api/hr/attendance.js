@@ -42,3 +42,12 @@ export function delAttendance(id) {
     method: 'delete'
   })
 }
+
+// 查询每月员工考勤列表 考勤表现
+export function monthOfList(query) {
+  return request({
+    url: '/hr/attendance/monthOfList',
+    method: 'get',
+    params: query
+  })
+}

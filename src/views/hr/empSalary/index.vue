@@ -48,6 +48,8 @@
             v-hasPermi="['hr:empSalary:edit']">修改</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
             v-hasPermi="['hr:empSalary:remove']">删除</el-button>
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['hr:empSalary:edit']">结算明细工资</el-button>
         </template>
       </el-table-column>
     </el-table>
