@@ -25,11 +25,11 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="attendanceMonthList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+    <el-table v-loading="loading" :data="attendanceMonthList" >
       <el-table-column label="员工工号" fixed align="center" prop="workId" width="140" />
       <el-table-column label="员工名称" fixed align="center" prop="employeeName" />
-
+      <el-table-column label="部门名称"  align="center" prop="deptName" width="130" />
+      <el-table-column label="职位"  align="center" prop="postName" width="130" />
       <el-table-column v-for="index in dayNum" :label="index + '日'" :key="index" min-width="55">
         <template #default="scope">
           <dict-tag :options="employee_attendance_status" :value="scope.row.attendanceList[index - 1].value" />
@@ -45,18 +45,12 @@
 
 <script setup name="Show">
 import { monthOfList } from "@/api/hr/attendance";
-import { listEmployee } from "@/api/hr/employee";
 const { proxy } = getCurrentInstance();
 
 //员工考勤状态
 const { employee_attendance_status } = proxy.useDict("employee_attendance_status");
 
-// 选中数组
-const ids = ref([]);
-// 非单个禁用
-const single = ref(true);
-// 非多个禁用
-const multiple = ref(true);
+
 // 显示搜索条件
 const showSearch = ref(true);
 // 总条数
@@ -65,10 +59,7 @@ const total = ref(0);
 const attendanceMonthList = ref([]);
 // 总条数
 const dayNum = ref(0);
-// 弹出层标题
-const title = ref("");
-// 是否显示弹出层
-const open = ref(false);
+
 const loading = ref(true);
 // 查询参数/表单参数/表单校验
 const data = reactive({
@@ -105,34 +96,7 @@ function getList () {
   });
 }
 
-function handleSelect (item) {
-  form.value.employeeId = item.employeeId
-  form.value.employeeName = item.name
-}
-// 取消按钮
-function cancel () {
-  open.value = false;
-  reset();
-}
-// 表单重置
-function reset () {
-  form.value = {
-    id: null,
-    employeeId: null,
-    employeeName: "",
-    morStartTime: null,
-    morEndTime: null,
-    aftStartTime: null,
-    aftEndTime: null,
-    attendanceDate: null,
-    attendanceStatus: null,
-    remark: null,
-    createTime: null,
-    updateTime: null,
-    isDeleted: null
-  };
-  proxy.resetForm("attendanceRef");
-}
+
 /** 搜索按钮操作 */
 function handleQuery () {
   queryParams.value.pageNum = 1;
@@ -143,67 +107,15 @@ function resetQuery () {
   proxy.resetForm("queryForm");
   handleQuery();
 }
-// 多选框选中数据
-function handleSelectionChange (selection) {
-  ids.value = selection.map(item => item.id)
-  single.value = selection.length !== 1
-  multiple.value = !selection.length
-}
-/** 新增按钮操作 */
-function handleAdd () {
-  reset();
-  open.value = true;
-  title.value = "添加员工考勤管理";
-}
-/** 修改按钮操作 */
-function handleUpdate (row) {
-  reset();
-  const id = row.id || ids.value
-  getAttendance(id).then(response => {
-    form.value = response.data;
-    open.value = true;
-    title.value = "修改员工考勤管理";
-  });
-}
-/** 提交按钮 */
-function submitForm () {
-  proxy.$refs["attendanceRef"].validate(valid => {
-    if (valid) {
-      if (form.value.id != null) {
-        updateAttendance(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addAttendance(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
-      }
-    }
-  });
-}
-/** 删除按钮操作 */
-function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除员工考勤管理编号为"' + ids + '"的数据项？').then(function () {
-    return delAttendance(ids);
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => { });
-}
 
-
-/** 导出按钮操作 */
+/** 月考勤统计数据 导出按钮操作 */
 function handleExport () {
-  proxy.download('hr/attendance/export', {
+  loading.value = true;
+  proxy.download('hr/attendance/exportMonthList', {
     ...queryParams.value
-  }, `attendance_${new Date().getTime()}.xlsx`)
+  }, `员工${ proxy.parseTime(new Date(), '{y}年{m}月')}考勤统计.xlsx`)
+  loading.value = false;
 }
-
 
 getList();
 </script>
