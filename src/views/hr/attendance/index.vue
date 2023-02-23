@@ -40,6 +40,10 @@
         <el-button type="warning" plain icon="Download" @click="handleExport"
           v-hasPermi="['hr:attendance:export']">导出</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="Upload" @click="handleImport"
+          v-hasPermi="['hr:attendance:import']">导入考勤数据</el-button>
+      </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -95,7 +99,7 @@
       <el-form ref="attendanceRef" :model="form" :rules="rules">
         <el-form-item label="员工名称" prop="employeeId">
           <el-autocomplete v-model="form.employeeName" :fetch-suggestions="getEmployeeList" placeholder="请输入员工名称"
-            @select="handleSelect" clearable :disabled="title=='修改员工考勤管理'">
+            @select="handleSelect" clearable :disabled="title == '修改员工考勤管理'">
             <template #suffix>
               <el-icon class="el-input__icon">
                 <edit />
@@ -147,13 +151,36 @@
         </div>
       </template>
     </el-dialog>
+
+    <el-dialog :title="title1" v-model="open1" width="400px" append-to-body>
+      <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" name="importFile" :headers="headers" :action="url"
+        :disabled="isUploading" :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess"
+        :auto-upload="false" drag>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <!-- <div class="el-upload__tip" slot="tip">
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
+          </div> -->
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
+            @click="importTemplate">下载模板</el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="open1 = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="Attendance">
 import { listAttendance, getAttendance, delAttendance, addAttendance, updateAttendance } from "@/api/hr/attendance";
 import { listEmployee } from "@/api/hr/employee";
+import { getToken } from "@/utils/auth";
 const { proxy } = getCurrentInstance();
+
 
 //员工考勤状态
 const { employee_attendance_status } = proxy.useDict("employee_attendance_status");
@@ -206,7 +233,22 @@ const data = reactive({
   },
 });
 const { queryParams, form, rules } = toRefs(data);
-
+// 用户导入参数
+const upload = reactive({
+  // 是否显示弹出层（用户导入）
+  open1: false,
+  // 弹出层标题（用户导入）
+  title1: "",
+  // 是否禁用上传
+  isUploading: false,
+  // 是否更新已经存在的用户数据
+  updateSupport: 0,
+  // 设置上传的请求头部
+  headers: { Authorization: "Bearer " + getToken() },
+  // 上传的地址
+  url: import.meta.env.VITE_APP_BASE_API + "/hr/attendance/import"
+})
+const { open1, title1, isUploading, updateSupport, headers, url } = toRefs(upload);
 /** 查询员工考勤管理列表 */
 function getList () {
   loading.value = true;
@@ -322,7 +364,31 @@ function handleExport () {
     ...queryParams.value
   }, `attendance_${new Date().getTime()}.xlsx`)
 }
-
+/** 下载模板操作 */
+function importTemplate () {
+  proxy.download('hr/attendance/importAttendanceTemplate', {
+  }, `anttendance_template_${new Date().getTime()}.xlsx`)
+}
+// 文件上传中处理
+function handleFileUploadProgress (event, file, fileList) {
+  isUploading.value = true;
+}
+// 文件上传成功处理
+function handleFileSuccess(response, file, fileList) {
+  open1.value = false;
+  isUploading.value = false;
+  proxy.$refs.upload.clearFiles();
+  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  getList();
+}
+// 提交上传文件
+function submitFileForm() {
+  proxy.$refs.upload.submit();
+}
+function handleImport () {
+  title1.value = "批量导入员工考勤数据";
+  open1.value = true;
+}
 
 getList();
 </script>

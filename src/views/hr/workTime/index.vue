@@ -232,6 +232,7 @@ function getList () {
 function getDeptList () {
   listDept(queryParams.value).then(response => {
     deptList.value = response.data;
+    getList ()
   });
 }
 /** 查询部门下拉树结构 */
@@ -331,7 +332,8 @@ function handleExport () {
   }, `workTime_${new Date().getTime()}.xlsx`)
 }
 
-getList ()
-getDeptTree();
 getDeptList();
+
+getDeptTree();
+
 </script>
