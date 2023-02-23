@@ -45,9 +45,9 @@
     <el-table v-loading="loading" :data="workTimeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="工作时间编号" align="center" prop="id" /> -->
-      <el-table-column label="所属部门" align="center" prop="dept">
+      <el-table-column label="所属部门" align="center" prop="dept" show-overflow-tooltip width="150">
         <template #default="scope">
-          <span>{{ scope.row.dept.deptName }}</span>
+          <span>{{ `${scope.row.ancestorItem.deptName}--${scope.row.dept.deptName}` }}</span>
         </template>
       </el-table-column>
       <el-table-column label="上午上班时间" align="center" prop="morStartTime" width="140">
@@ -75,13 +75,13 @@
           <div v-text="`${scope.row.totalWorkTime}小时`"></div>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
+     
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
           <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column label="创建时间" align="center" prop="createTime" show-overflow-tooltip>
         <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
@@ -152,6 +152,7 @@
 <script setup name="WorkTime">
 import { listWorkTime, getWorkTime, delWorkTime, addWorkTime, updateWorkTime } from "@/api/hr/workTime";
 import { deptTreeSelect } from "@/api/system/user";
+import { listDept } from "@/api/system/dept";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -169,6 +170,7 @@ const total = ref(0);
 // 工作时间管理表格数据
 const workTimeList = ref([]);
 const deptOptions = ref(undefined);
+const deptList = ref([]);
 // 弹出层标题
 const title = ref("");
 // 是否显示弹出层
@@ -220,7 +222,16 @@ function getList () {
   listWorkTime(queryParams.value).then(response => {
     workTimeList.value = response.rows;
     total.value = response.total;
+    workTimeList.value.forEach(element => {
+      element.ancestorItem = deptList.value.find(item => item.deptId == element.dept.parentId);
+    });
     loading.value = false;
+  });
+}
+/** 查询部门列表 */
+function getDeptList () {
+  listDept(queryParams.value).then(response => {
+    deptList.value = response.data;
   });
 }
 /** 查询部门下拉树结构 */
@@ -320,6 +331,7 @@ function handleExport () {
   }, `workTime_${new Date().getTime()}.xlsx`)
 }
 
+getList ()
 getDeptTree();
-getList();
+getDeptList();
 </script>
