@@ -6,14 +6,12 @@
       </el-form-item>
       <el-form-item label="请假类型" prop="leaveType">
         <el-select v-model="queryParams.leaveType" placeholder="请选择请假类型" clearable>
-          <el-option v-for="dict in employee_leave_type" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+          <el-option v-for="dict in employee_leave_type" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="请假状态" prop="leaveStatus">
         <el-select v-model="queryParams.leaveStatus" placeholder="请选择请假状态" clearable>
-          <el-option v-for="dict in employee_leave_status" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+          <el-option v-for="dict in employee_leave_status" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -69,12 +67,12 @@
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="250">
         <template #default="scope">
-          <el-button link type="primary" icon="Switch" @click="handleUpdate(scope.row)"
-            v-hasPermi="['hr:overtime:edit']">审批</el-button>
+          <el-button link type="primary" icon="Switch" @click="handleApproval(scope.row)"
+            v-hasPermi="['hr:leave:approval']" v-show="scope.row.leaveStatus == '0'">审批</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['hr:overtime:edit']">修改</el-button>
+            v-hasPermi="['hr:leave:edit']">修改</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['hr:overtime:remove']">删除</el-button>
+            v-hasPermi="['hr:leave:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -84,10 +82,10 @@
 
     <!-- 添加或修改请假审批管理对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="leaveRef" :model="form" :rules="rules" :disabled="form.leaveStatus!='0'">
+      <el-form ref="leaveRef" :model="form" :rules="rules" :disabled="form.leaveStatus != '0' || title == '审批请假'">
         <el-form-item label="员工" prop="employeeId">
           <el-autocomplete v-model="form.employeeName" :fetch-suggestions="getEmployeeList" placeholder="请输入员工名称"
-            @select="handleSelect" clearable :disabled="title=='修改请假审批管理'">
+            @select="handleSelect" clearable :disabled="title == '修改请假审批管理' || title == '审批请假'">
             <template #suffix>
               <el-icon class="el-input__icon">
                 <edit />
@@ -120,7 +118,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="请假状态" prop="leaveStatus">
-          <el-select v-model="form.leaveStatus" placeholder="请选择请假状态" clearable disabled >
+          <el-select v-model="form.leaveStatus" placeholder="请选择请假状态" clearable disabled>
             <el-option v-for="dict in employee_leave_status" :key="dict.value" :label="dict.label"
               :value="dict.value"></el-option>
           </el-select>
@@ -129,9 +127,14 @@
           <el-input v-model="form.leaveReason" type="textarea" placeholder="请输入请假原因" clearable />
         </el-form-item>
       </el-form>
+      <el-divider content-position="center" v-if="title=='审批请假'">审批请假</el-divider>
+      <el-select v-model="form.status" placeholder="请选择请假状态" clearable v-if="title=='审批请假'" >
+        <el-option v-for="dict in employee_leave_status" :key="dict.value" :label="dict.label"
+          :value="dict.value"></el-option>
+      </el-select>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button type="primary" @click="submitForm" v-show="form.leaveStatus == '0'">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
       </template>
@@ -223,17 +226,18 @@ function reset () {
   form.value = {
     leaveId: null,
     employeeId: null,
-    employeeName:"",
+    employeeName: "",
     days: null,
     leaveType: null,
-    leaveReason:null,
+    leaveReason: null,
     startDate: null,
     endDate: null,
     leaveStatus: "0",
     remark: null,
     createTime: null,
     updateTime: null,
-    isDeleted: null
+    isDeleted: null,
+    status:null,
   };
   proxy.resetForm("lerveRef");
 }
@@ -269,11 +273,22 @@ function handleUpdate (row) {
     title.value = "修改请假审批管理";
   });
 }
+/** 审批请假 */
+function handleApproval (row) {
+  reset();
+  const leaveId = row.leaveId || ids.value
+  getLeave(leaveId).then(response => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "审批请假";
+  });
+}
 /** 提交按钮 */
 function submitForm () {
   proxy.$refs["leaveRef"].validate(valid => {
     if (valid) {
       if (form.value.leaveId != null) {
+        form.value.leaveStatus = form.value.status
         updateLeave(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
