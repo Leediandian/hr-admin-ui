@@ -514,6 +514,9 @@ const data = reactive({
     engageForm: [
       { required: true, message: "聘用形式不能为空", trigger: "change" }
     ],
+    workId: [
+      { required: true, message: "员工-工号不能为空", trigger: "blur" }
+    ],
     workState: [
       { required: true, message: "员工在职状态不能为空", trigger: "change" }
     ],

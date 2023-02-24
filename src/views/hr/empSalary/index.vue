@@ -34,7 +34,7 @@
 
     <el-table v-loading="loading" :data="empSalaryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="员工薪资编号" align="center" prop="id" />
+      <el-table-column label="员工薪资编号" align="center" prop="empSalaryId" />
       <el-table-column label="员工名称" align="center" prop="employeeName" />
       <el-table-column label="薪资账套名称" align="center" prop="salaryName" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -190,7 +190,7 @@ function cancel () {
 // 表单重置
 function reset () {
   form.value = {
-    id: null,
+    empSalaryId: null,
     employeeId: null,
     salaryId: null,
     salaryName:"",
@@ -210,7 +210,7 @@ function resetQuery () {
 }
 // 多选框选中数据
 function handleSelectionChange (selection) {
-  ids.value = selection.map(item => item.id)
+  ids.value = selection.map(item => item.empSalaryId)
   single.value = selection.length !== 1
   multiple.value = !selection.length
 }
@@ -234,7 +234,7 @@ function handleUpdate (row) {
 function submitForm () {
   proxy.$refs["empSalaryRef"].validate(valid => {
     if (valid) {
-      if (form.value.id != null) {
+      if (form.value.empSalaryId != null) {
         updateEmpSalary(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
