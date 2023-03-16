@@ -47,7 +47,7 @@
       <!-- <el-table-column label="工作时间编号" align="center" prop="id" /> -->
       <el-table-column label="所属部门" align="center" prop="dept" show-overflow-tooltip width="150">
         <template #default="scope">
-          <span>{{ `${scope.row.ancestorItem.deptName}--${scope.row.dept.deptName}` }}</span>
+          <span>{{ `${scope.row.dept.deptName}` }}</span>
         </template>
       </el-table-column>
       <el-table-column label="上午上班时间" align="center" prop="morStartTime" width="140">
@@ -222,9 +222,9 @@ function getList () {
   listWorkTime(queryParams.value).then(response => {
     workTimeList.value = response.rows;
     total.value = response.total;
-    workTimeList.value.forEach(element => {
-      element.ancestorItem = deptList.value.find(item => item.deptId == element.dept.parentId);
-    });
+    // workTimeList.value.forEach(element => {
+    //   element.ancestorItem = deptList.value.find(item => item.deptId == element.dept.parentId);
+    // });
     loading.value = false;
   });
 }
@@ -317,9 +317,9 @@ function submitForm () {
 }
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除工作时间管理编号为"' + ids + '"的数据项？').then(function () {
-    return delWorkTime(ids);
+  const worktimeids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除工作时间管理编号为"' + worktimeids + '"的数据项？').then(function () {
+    return delWorkTime(worktimeids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -332,7 +332,7 @@ function handleExport () {
   }, `workTime_${new Date().getTime()}.xlsx`)
 }
 
-getDeptList();
+getList();
 
 getDeptTree();
 

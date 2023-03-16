@@ -145,8 +145,10 @@
 <script setup name="Leave">
 import { listLeave, getLeave, delLeave, addLeave, updateLeave } from "@/api/hr/leave";
 import { listEmployee } from "@/api/hr/employee";
-
+import useUserStore from '@/store/modules/user'
+import { fromPairs } from "lodash";
 const { proxy } = getCurrentInstance();
+const userStore = useUserStore()
 //员工请假状态列表
 const { employee_leave_status } = proxy.useDict("employee_leave_status");
 //员工请假类型列表
@@ -262,6 +264,9 @@ function handleAdd () {
   reset();
   open.value = true;
   title.value = "添加请假审批管理";
+  if (userStore.user.nickName != "admin") {
+    form.value.employeeName = userStore.user.nickName
+  }
 }
 /** 修改按钮操作 */
 function handleUpdate (row) {

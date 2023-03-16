@@ -2,7 +2,7 @@
  * @Author: diandian
  * @Date: 2023-02-13 09:49:16
  * @LastEditors: diandain 498728659@qq.com
- * @LastEditTime: 2023-02-21 18:12:51
+ * @LastEditTime: 2023-03-15 11:03:24
  * @FilePath: \hr-admin-ui\src\views\hr\employeeRemove\index.vue
  * @Description: 
  * 
@@ -174,12 +174,7 @@ import { deptTreeSelect } from "@/api/system/user";
 import { listEmployee } from "@/api/hr/employee";
 const { proxy } = getCurrentInstance();
 
-// 选中数组
-const ids = ref([]);
-// 非单个禁用
-const single = ref(true);
-// 非多个禁用
-const multiple = ref(true);
+
 // 显示搜索条件
 const showSearch = ref(true);
 // 总条数
@@ -196,6 +191,12 @@ const title = ref("");
 // 是否显示弹出层
 const open = ref(false);
 const loading = ref(true);
+// 选中数组
+const ids = ref([]);
+// 非单个禁用
+const single = ref(true);
+// 非多个禁用
+const multiple = ref(true);
 // 查询参数/表单参数/表单校验
 const data = reactive({
   form: {},
@@ -346,9 +347,9 @@ function submitForm () {
 }
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除员工调动编号为"' + ids + '"的数据项？').then(function () {
-    return delEmployeeRemove(ids);
+  const removeids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除员工调动编号为"' + removeids + '"的数据项？').then(function () {
+    return delEmployeeRemove(removeids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

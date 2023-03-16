@@ -2,7 +2,7 @@
  * @Author: diandian
  * @Date: 2023-02-20 15:40:20
  * @LastEditors: diandain 498728659@qq.com
- * @LastEditTime: 2023-02-21 18:08:30
+ * @LastEditTime: 2023-02-25 23:27:30
  * @FilePath: \hr-admin-ui\src\store\modules\user.js
  * @Description: 
  * 
@@ -20,7 +20,8 @@ const useUserStore = defineStore(
       name: '',
       avatar: '',
       roles: [],
-      permissions: []
+      permissions: [],
+      user: {}
     }),
     actions: {
       // 登录
@@ -54,6 +55,7 @@ const useUserStore = defineStore(
             }
             this.name = user.userName
             this.avatar = avatar;
+            this.user = user;
             resolve(res)
           }).catch(error => {
             reject(error)
@@ -67,6 +69,7 @@ const useUserStore = defineStore(
             this.token = ''
             this.roles = []
             this.permissions = []
+            this.user = []
             removeToken()
             resolve()
           }).catch(error => {

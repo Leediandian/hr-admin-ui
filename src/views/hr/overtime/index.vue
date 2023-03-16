@@ -303,9 +303,9 @@ function submitForm () {
 }
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除员工加班管理编号为"' + ids + '"的数据项？').then(function () {
-    return delOvertime(ids);
+  const overtimeids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除员工加班管理编号为"' + overtimeids + '"的数据项？').then(function () {
+    return delOvertime(overtimeids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

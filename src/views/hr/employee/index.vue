@@ -355,7 +355,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="工号" prop="workId">
-              <el-input v-model="form.workId" placeholder="按最新员工的工号递增1 例00000196" />
+              <el-input v-model="form.workId" :disabled="title=='修改员工档案管理'" placeholder="按最新员工的工号递增1 例00000196" />
             </el-form-item>
           </el-col>
         </el-row>

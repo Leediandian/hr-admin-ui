@@ -348,9 +348,9 @@ function submitForm () {
 }
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除员工考勤管理编号为"' + ids + '"的数据项？').then(function () {
-    return delAttendance(ids);
+  const attenids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除员工考勤管理编号为"' + attenids + '"的数据项？').then(function () {
+    return delAttendance(attenids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

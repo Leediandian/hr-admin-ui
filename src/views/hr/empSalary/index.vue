@@ -252,9 +252,9 @@ function submitForm () {
 }
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除员工账套管理编号为"' + ids + '"的数据项？').then(function () {
-    return delEmpSalary(ids);
+  const empsids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除员工账套管理编号为"' + empsids + '"的数据项？').then(function () {
+    return delEmpSalary(empsids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
